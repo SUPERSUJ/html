@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div id="main"></div>
+		<script type="text/javascript">
+			var mLastTime = 0;
+			var lastTime = 0;
+			
+			var main = document.getElementById('main');
+			var i = 0;
+			var j = 0;
+			var mTimer;
+			var timer;
+//			mWork();
+			work();
+			
+			function mRequestAnimationFrame(callback) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16.7 - (currTime - mLastTime));
+				var id = window.setTimeout(function() {
+					callback(currTime + timeToCall);
+				}, timeToCall);
+				console.log('i: ', currTime - mLastTime);
+				mLastTime = currTime + timeToCall;
+				return id;
+			}
+			function mWork() {
+				main.innerText = i++;
+				if (i > 100) {
+					window.clearTimeout(mTimer);
+				} else {
+					mTimer = mRequestAnimationFrame(mWork);
+				}
+			}
+			function work() {
+				main.innerText = j++;
+				if (j > 100) {
+					window.cancelAnimationFrame(timer);
+				} else {
+					var currTime = new Date().getTime();
+					console.log('requestAnimationFrame: ', currTime - lastTime);
+					timer = window.requestAnimationFrame(work);
+					lastTime = currTime + 16.7;
+				}
+			}
+		</script>
+	</body>
+
+</html>
